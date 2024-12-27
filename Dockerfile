@@ -1,19 +1,32 @@
 # PHP için Vercel uyumlu Dockerfile
 FROM php:8.1-apache
 
-# Gerekli sistem bağımlılıkları
+# Sistem güncellemeleri ve gerekli paketler
 RUN apt-get update && apt-get install -y \
     libssl-dev \
     libpq-dev \
     git \
     unzip \
-    openssl \
+    wget \
+    gnupg \
     ca-certificates \
-    libssl1.1 \
     && rm -rf /var/lib/apt/lists/*
 
-# SSL sertifikaları
-RUN update-ca-certificates
+# OpenSSL ve SSL kütüphanesi için özel kurulum
+RUN wget https://www.openssl.org/source/openssl-1.1.1k.tar.gz \
+    && tar -xzvf openssl-1.1.1k.tar.gz \
+    && cd openssl-1.1.1k \
+    && ./config --prefix=/usr/local/openssl --openssldir=/usr/local/openssl shared zlib \
+    && make \
+    && make install \
+    && ldconfig \
+    && cd .. \
+    && rm -rf openssl-1.1.1k*
+
+# Ortam değişkenleri
+ENV LD_LIBRARY_PATH=/usr/local/openssl/lib:$LD_LIBRARY_PATH
+ENV PATH="/usr/local/openssl/bin:$PATH"
+ENV OPENSSL_CONF=/usr/local/openssl/openssl.cnf
 
 # PHP uzantıları
 RUN docker-php-ext-install \
@@ -34,7 +47,6 @@ RUN a2enmod rewrite
 
 # SSL yapılandırması
 ENV CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
-ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 
 # Port
 EXPOSE 80

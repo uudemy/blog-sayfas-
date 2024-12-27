@@ -1,6 +1,7 @@
 <?php
 // OpenSSL ve SSL sertifika ayarları
 putenv('CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt');
+putenv('OPENSSL_CONF=/usr/local/openssl/openssl.cnf');
 openssl_set_default_verify_paths();
 
 require_once 'vendor/autoload.php';
