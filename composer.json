@@ -16,5 +16,11 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
+    },
+    "scripts": {
+        "vercel-build": [
+            "composer install --no-dev --no-scripts",
+            "composer dump-autoload -o"
+        ]
     }
 }
