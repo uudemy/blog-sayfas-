@@ -1,16 +1,18 @@
-# Node.js build stage
-FROM node:18 AS node-builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
+# PHP için Vercel uyumlu Dockerfile
+FROM php:8.1-apache
 
-# PHP stage
-FROM php:8.2-apache
+# Gerekli sistem bağımlılıkları
+RUN apt-get update && apt-get install -y \
+    libssl-dev \
+    libpq-dev \
+    git \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
 
-# Gerekli PHP uzantıları
-RUN docker-php-ext-install pdo pdo_pgsql
+# PHP uzantıları
+RUN docker-php-ext-install \
+    pdo \
+    pdo_pgsql
 
 # Composer kurulumu
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -21,8 +23,7 @@ COPY . /var/www/html/
 # Composer bağımlılıkları
 RUN composer install --no-dev --no-interaction --optimize-autoloader
 
-# Apache yapılandırması
-COPY .htaccess /var/www/html/
+# Apache modrewrite
 RUN a2enmod rewrite
 
 # Port
