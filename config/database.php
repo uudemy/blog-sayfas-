@@ -4,28 +4,25 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Dotenv\Dotenv;
 
 class SupabaseDatabase {
-    private $host;
-    private $port;
-    private $dbname;
-    private $username;
-    private $password;
+    private $supabaseUrl;
+    private $supabaseKey;
     private $conn;
 
     public function __construct() {
-        // Ortam değişkenlerini güvenli bir şekilde al
-        $this->host = getenv('DB_HOST') ?: 'aws-0-us-west-1.pooler.supabase.com';
-        $this->port = getenv('DB_PORT') ?: '6543';
-        $this->dbname = getenv('DB_NAME') ?: 'postgres';
-        $this->username = getenv('DB_USER') ?: 'postgres.crrnxxcsesxkcarwutda';
-        $this->password = getenv('DB_PASSWORD') ?: '';
+        // Supabase bağlantı parametreleri
+        $this->supabaseUrl = 'https://crrnxxcsesxkcarwutda.supabase.co';
+        $this->supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNycm54eGNzZXN4a2Nhcnd1dGRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUyODY0MzcsImV4cCI6MjA1MDg2MjQzN30.MX7R3uUxLm56RrwcpW5k9IGcA2tPlWCp61SH2BzxUME';
     }
 
     public function getConnection() {
         try {
-            // PDO bağlantısı
-            $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname};sslmode=require";
+            // PostgreSQL bağlantısı
+            $dsn = "pgsql:host=" . parse_url($this->supabaseUrl, PHP_URL_HOST) . 
+                   ";port=5432" . 
+                   ";dbname=postgres" . 
+                   ";sslmode=require";
 
-            $this->conn = new PDO($dsn, $this->username, $this->password, [
+            $this->conn = new PDO($dsn, 'postgres', $this->supabaseKey, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_PERSISTENT => true
