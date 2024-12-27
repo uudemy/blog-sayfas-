@@ -1,4 +1,7 @@
 <?php
+// OpenSSL sertifika yolu ayarı
+putenv('CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt');
+
 require_once 'vendor/autoload.php';
 require_once 'config/database.php';
 
