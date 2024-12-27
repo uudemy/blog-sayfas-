@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+
+    {{!-- Font Kaynakları --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    {{!-- Font Awesome --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    {{!-- Tailwind CSS --}}
+    <link href="/css/output.css" rel="stylesheet">
+
+    {{!-- Favicon --}}
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+
+    <meta name="description" content="Modern Blog Platformu">
+    <style>
+        /* Cache busting için versiyon ekledik */
+        body { transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                        Blog Platformu
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                        Ana Sayfa
+                    </a>
+                    <a href="/login" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                        Giriş
+                    </a>
+                    <a href="/register" class="bg-primary-600 text-white px-4 py-2 rounded-full hover:bg-primary-700 transition-colors">
+                        Kayıt
+                    </a>
+                    <button id="nav-theme-toggle" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-adjust text-xl"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="pt-24 min-h-screen">
+        {{{body}}}
+    </main>
+
+    <footer class="bg-white dark:bg-gray-800 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-600 dark:text-gray-300">
+                &copy; 2024 Blog Platformu. Tüm hakları saklıdır.
+            </p>
+            <div class="mt-4 space-x-4">
+                <a href="#" class="text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">Gizlilik Politikası</a>
+                <a href="#" class="text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">Kullanım Koşulları</a>
+            </div>
+        </div>
+    </footer>
+
+    {{!-- Ana JavaScript Dosyaları --}}
+    <script src="/js/auth.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navThemeToggle = document.getElementById('nav-theme-toggle');
+            const htmlElement = document.documentElement;
+
+            // Tema tercihini localStorage'dan al
+            if (localStorage.getItem('color-theme') === 'dark') {
+                htmlElement.classList.add('dark');
+            }
+
+            navThemeToggle.addEventListener('click', () => {
+                if (htmlElement.classList.contains('dark')) {
+                    htmlElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    htmlElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

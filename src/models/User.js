@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -21,6 +21,10 @@ const UserSchema = new mongoose.Schema({
         required: true,
         minlength: 6
     },
+    salt: {
+        type: String,
+        default: () => crypto.randomBytes(16).toString('hex')
+    },
     profilePicture: {
         type: String,
         default: '/images/default-avatar.png'
@@ -38,19 +42,43 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+}, {
+    // Mongoose hook'larını etkinleştir
+    timestamps: true
 });
 
 // Şifre hashleme
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', function(next) {
+    // Sadece şifre değiştiğinde hash'le
     if (this.isModified('password')) {
-        this.password = await bcrypt.hash(this.password, 10);
+        console.log('Şifre hash\'leniyor', {
+            username: this.username,
+            salt: this.salt
+        });
+
+        this.password = crypto.pbkdf2Sync(
+            this.password, 
+            this.salt, 
+            1000, 
+            64, 
+            'sha512'
+        ).toString('hex');
     }
+    
     next();
 });
 
 // Şifre doğrulama
-UserSchema.methods.comparePassword = async function(candidatePassword) {
-    return bcrypt.compare(candidatePassword, this.password);
+UserSchema.methods.comparePassword = function(candidatePassword) {
+    const hashedPassword = crypto.pbkdf2Sync(
+        candidatePassword, 
+        this.salt, 
+        1000, 
+        64, 
+        'sha512'
+    ).toString('hex');
+    
+    return this.password === hashedPassword;
 };
 
 module.exports = mongoose.model('User', UserSchema);

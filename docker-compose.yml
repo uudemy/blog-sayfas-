@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://database:27017/blogdb
+      - JWT_SECRET=sizin_gizli_anahtariniz
+    depends_on:
+      - database
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  database:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:

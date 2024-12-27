@@ -1,0 +1,79 @@
+<div class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 animate-fade-in">
+    <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-6xl font-display font-bold mb-4 text-primary-600 dark:text-primary-400 animate-slide-up">
+            {{title}}
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
+            {{description}}
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-8 mb-16">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                <div class="text-primary-500 dark:text-primary-400 text-4xl mb-4">
+                    <i class="fas fa-pen"></i>
+                </div>
+                <h2 class="text-xl font-semibold mb-3">Blog Yaz</h2>
+                <p class="text-gray-600 dark:text-gray-300">
+                    Düşüncelerini paylaş, fikirlerini dünyayla buluştur.
+                </p>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                <div class="text-primary-500 dark:text-primary-400 text-4xl mb-4">
+                    <i class="fas fa-compass"></i>
+                </div>
+                <h2 class="text-xl font-semibold mb-3">Keşfet</h2>
+                <p class="text-gray-600 dark:text-gray-300">
+                    Binlerce blog yazısı arasında gezin ve ilginç içerikler bulun.
+                </p>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                <div class="text-primary-500 dark:text-primary-400 text-4xl mb-4">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h2 class="text-xl font-semibold mb-3">Etkileşim</h2>
+                <p class="text-gray-600 dark:text-gray-300">
+                    Yorumlar ve beğenilerle toplulukla iletişim kur.
+                </p>
+            </div>
+        </div>
+
+        <div class="flex justify-center space-x-4">
+            <a href="/register" class="bg-primary-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-primary-700 transition-colors duration-300 transform hover:scale-105 inline-block">
+                Hemen Üye Ol
+            </a>
+            <a href="/login" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white px-8 py-3 rounded-full font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 inline-block">
+                Giriş Yap
+            </a>
+        </div>
+
+        <div class="mt-12 text-center">
+            <button id="theme-toggle" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                <i class="fas fa-adjust text-2xl"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Tema tercihini localStorage'dan al
+        if (localStorage.getItem('color-theme') === 'dark') {
+            htmlElement.classList.add('dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+    });
+</script>
