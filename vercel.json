@@ -11,5 +11,8 @@
             "src": "/(.*)",
             "dest": "/index.php"
         }
-    ]
+    ],
+    "env": {
+        "PHP_VERSION": "8.1"
+    }
 }

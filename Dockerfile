@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     openssl \
     ca-certificates \
+    libssl1.1 \
     && rm -rf /var/lib/apt/lists/*
 
 # SSL sertifikaları
@@ -33,6 +34,7 @@ RUN a2enmod rewrite
 
 # SSL yapılandırması
 ENV CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 
 # Port
 EXPOSE 80
