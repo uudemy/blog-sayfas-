@@ -1,4 +1,11 @@
 {
-    "name": "blog-projesi",
-    "version": "1.0.0"
+    "name": "yusa-blog-projesi",
+    "version": "1.0.0",
+    "description": "Kişisel Blog Projesi",
+    "engines": {
+        "node": "18.x"
+    },
+    "scripts": {
+        "build": "echo 'No build step required'"
+    }
 }
