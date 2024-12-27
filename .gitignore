@@ -1,0 +1,23 @@
+# Bağımlılıklar
+/vendor/
+/node_modules/
+
+# Ortam Dosyaları
+.env
+.env.local
+.env.development
+.env.production
+
+# Vercel
+.vercel
+
+# Sistem Dosyaları
+.DS_Store
+Thumbs.db
+
+# Log Dosyaları
+*.log
+
+# Derleme Çıktıları
+/public/css/
+/public/js/
