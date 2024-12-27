@@ -1,17 +1,14 @@
 {
-    "name": "blog/blog-projesi",
-    "description": "Blog projesi için PHP bağımlılıkları",
+    "name": "blog-projesi",
+    "description": "Kişisel Blog Projesi",
     "type": "project",
     "require": {
-        "php": "^8.2",
-        "ext-pdo": "*",
-        "ext-pgsql": "*",
+        "php": "^8.1",
         "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
         "psr-4": {
-            "App\\": "models/",
-            "Config\\": "config/"
+            "App\\": "src/"
         },
         "files": [
             "config/database.php"
