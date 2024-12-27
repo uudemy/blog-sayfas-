@@ -14,11 +14,7 @@
             "config/database.php"
         ]
     },
-    "scripts": {
-        "vercel-build": [
-            "composer install --no-dev --no-scripts",
-            "npm install",
-            "npm run build"
-        ]
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
     }
 }
