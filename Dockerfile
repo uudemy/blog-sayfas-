@@ -7,7 +7,12 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     git \
     unzip \
+    openssl \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
+
+# SSL sertifikaları
+RUN update-ca-certificates
 
 # PHP uzantıları
 RUN docker-php-ext-install \
@@ -25,6 +30,9 @@ RUN composer install --no-dev --no-interaction --optimize-autoloader
 
 # Apache modrewrite
 RUN a2enmod rewrite
+
+# SSL yapılandırması
+ENV CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 # Port
 EXPOSE 80
