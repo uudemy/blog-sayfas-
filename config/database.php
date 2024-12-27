@@ -12,16 +12,12 @@ class SupabaseDatabase {
     private $conn;
 
     public function __construct() {
-        // Dotenv yükle
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-        $dotenv->load();
-
-        // Supabase bağlantı parametreleri
-        $this->host = $_ENV['DB_HOST'] ?? 'aws-0-us-west-1.pooler.supabase.com';
-        $this->port = $_ENV['DB_PORT'] ?? '6543';
-        $this->dbname = $_ENV['DB_NAME'] ?? 'postgres';
-        $this->username = $_ENV['DB_USER'] ?? 'postgres.crrnxxcsesxkcarwutda';
-        $this->password = $_ENV['DB_PASSWORD'] ?? 'As15975312';
+        // Ortam değişkenlerini güvenli bir şekilde al
+        $this->host = getenv('DB_HOST') ?: 'aws-0-us-west-1.pooler.supabase.com';
+        $this->port = getenv('DB_PORT') ?: '6543';
+        $this->dbname = getenv('DB_NAME') ?: 'postgres';
+        $this->username = getenv('DB_USER') ?: 'postgres.crrnxxcsesxkcarwutda';
+        $this->password = getenv('DB_PASSWORD') ?: '';
     }
 
     public function getConnection() {

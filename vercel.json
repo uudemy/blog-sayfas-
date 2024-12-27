@@ -25,6 +25,8 @@
         "DB_PORT": "@db_port",
         "DB_NAME": "@db_name",
         "DB_USER": "@db_user",
-        "DB_PASSWORD": "@db_password"
+        "DB_PASSWORD": "@db_password",
+        "SUPABASE_URL": "@supabase_url",
+        "SUPABASE_KEY": "@supabase_key"
     }
 }
