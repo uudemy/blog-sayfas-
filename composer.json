@@ -5,12 +5,23 @@
     "require": {
         "php": "^8.2",
         "ext-pdo": "*",
-        "ext-pdo_pgsql": "*"
+        "ext-pgsql": "*",
+        "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
         "psr-4": {
             "App\\": "models/",
             "Config\\": "config/"
-        }
+        },
+        "files": [
+            "config/database.php"
+        ]
+    },
+    "scripts": {
+        "vercel-build": [
+            "composer install --no-dev --no-scripts",
+            "npm install",
+            "npm run build"
+        ]
     }
 }

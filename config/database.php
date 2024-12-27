@@ -1,41 +1,84 @@
 <?php
-class Database {
-    protected $host = "db";
-    protected $port = "5432";
-    protected $db_name = "blog_db";
-    protected $username = "postgres";
-    protected $password = "secret";
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Dotenv\Dotenv;
+
+class SupabaseDatabase {
+    private $host;
+    private $port;
+    private $dbname;
+    private $username;
+    private $password;
     private $conn;
 
-    public function getHost() {
-        return $this->host;
-    }
+    public function __construct() {
+        // Dotenv yükle
+        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+        $dotenv->load();
 
-    public function getDbName() {
-        return $this->db_name;
+        // Supabase bağlantı parametreleri
+        $this->host = $_ENV['DB_HOST'] ?? 'aws-0-us-west-1.pooler.supabase.com';
+        $this->port = $_ENV['DB_PORT'] ?? '6543';
+        $this->dbname = $_ENV['DB_NAME'] ?? 'postgres';
+        $this->username = $_ENV['DB_USER'] ?? 'postgres.crrnxxcsesxkcarwutda';
+        $this->password = $_ENV['DB_PASSWORD'] ?? 'As15975312';
     }
 
     public function getConnection() {
-        $this->conn = null;
-
         try {
-            $dsn = "pgsql:host=" . $this->host . 
-                   ";port=" . $this->port .
-                   ";dbname=" . $this->db_name;
-            
-            $this->conn = new PDO($dsn, $this->username, $this->password);
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-            
+            // PDO bağlantısı
+            $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname};sslmode=require";
+
+            $this->conn = new PDO($dsn, $this->username, $this->password, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_PERSISTENT => true
+            ]);
+
             return $this->conn;
-        } catch(PDOException $e) {
-            error_log("Veritabanı bağlantı hatası: " . $e->getMessage());
-            throw new Exception("Veritabanı bağlantısı kurulamadı: " . $e->getMessage());
+        } catch(PDOException $exception) {
+            error_log("Supabase Bağlantı Hatası: " . $exception->getMessage());
+            throw $exception;
         }
     }
 
-    public function closeConnection() {
-        $this->conn = null;
+    public function testConnection() {
+        try {
+            $conn = $this->getConnection();
+            $stmt = $conn->query("SELECT version()");
+            $version = $stmt->fetchColumn();
+            return [
+                'status' => true, 
+                'message' => "Supabase bağlantısı başarılı. PostgreSQL Versiyon: {$version}"
+            ];
+        } catch(Exception $e) {
+            return [
+                'status' => false, 
+                'message' => "Bağlantı hatası: " . $e->getMessage()
+            ];
+        }
+    }
+
+    // Supabase özel sorgu metotları
+    public function select($table, $columns = '*', $conditions = []) {
+        $conn = $this->getConnection();
+        $query = "SELECT {$columns} FROM {$table}";
+        
+        if (!empty($conditions)) {
+            $whereClause = [];
+            foreach ($conditions as $key => $value) {
+                $whereClause[] = "{$key} = :{$key}";
+            }
+            $query .= " WHERE " . implode(' AND ', $whereClause);
+        }
+
+        $stmt = $conn->prepare($query);
+        
+        foreach ($conditions as $key => $value) {
+            $stmt->bindValue(":{$key}", $value);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }
-?>
