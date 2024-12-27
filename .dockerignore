@@ -1,7 +1,23 @@
-node_modules
-vendor
+# Git
 .git
+.gitignore
+
+# Bağımlılıklar
+vendor/
+node_modules/
+
+# Ortam Dosyaları
 .env
-*.log
+.env.local
+
+# Geliştirme Dosyaları
+README.md
 docker-compose.yml
-Dockerfile 
+Dockerfile
+
+# Sistem Dosyaları
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel
