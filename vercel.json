@@ -11,9 +11,5 @@
             "src": "/(.*)",
             "dest": "/index.php"
         }
-    ],
-    "env": {
-        "PHP_VERSION": "8.1",
-        "OPENSSL_CONF": "/usr/local/openssl/openssl.cnf"
-    }
+    ]
 }
