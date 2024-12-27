@@ -2,10 +2,10 @@
     "name": "blog-projesi",
     "version": "1.0.0",
     "description": "Kişisel Blog Projesi",
-    "scripts": {
-        "build": "echo 'No build required'"
-    },
     "engines": {
         "node": "18.x"
+    },
+    "scripts": {
+        "build": "echo 'No build required'"
     }
 }

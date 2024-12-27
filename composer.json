@@ -1,5 +1,5 @@
 {
-    "name": "blog-projesi",
+    "name": "blog/blog-projesi",
     "description": "Kişisel Blog Projesi",
     "type": "project",
     "require": {
@@ -15,6 +15,7 @@
         ]
     },
     "config": {
+        "optimize-autoloader": true,
         "platform": {
             "php": "8.1"
         }
